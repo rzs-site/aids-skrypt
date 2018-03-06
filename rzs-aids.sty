@@ -78,7 +78,7 @@
 \counterwithin{figure}{section}
 \counterwithin{equation}{section}
 \counterwithin{table}{section}
-\counterwithin{listing}{section}
+\counterwithin{algorithm}{section}
 
 % bookmark
 \usepackage{bookmark}
@@ -97,11 +97,11 @@
 \newtheorem*{remark}{Uwaga}
 %% zadania i rozwiązania
 \theoremstyle{definition}
-\newtheorem{exercise}{Zadanie}[section]
+\newtheorem{exercise}{Zadanie}[chapter]
 \newtheoremstyle{solution}
   {}{}%
   {}{}%
   {\itshape}{.}%
   {\newline}{}%
-\theoremstyle{break}
+\theoremstyle{solution}
 \newtheorem*{solution}{Rozwiązanie}
