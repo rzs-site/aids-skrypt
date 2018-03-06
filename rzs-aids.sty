@@ -1,12 +1,107 @@
 \ProvidesPackage{rzs-aids}
 
+% rozmiar
 \usepackage[outer = 3cm, inner = 4cm]{geometry}
+
+% język polski oraz kodowanie
+\usepackage{amssymb} % niestety muszę bo babel nadpisuje znaki matematyczne
+\usepackage{polski}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\frenchspacing
 
 % algorytmy
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+% predefiniowanie nazw tytułów algorytmów
 \makeatletter
 \addto\captionspolish{\renewcommand{\ALG@name}{Algorytm}}
 \addto\captionsenglish{\renewcommand{\ALG@name}{Algorithm}}
 \makeatother
+
+% bibliografia
+\usepackage[%
+    style=numeric, 
+    sorting=nty,
+    isbn=false,
+    abbreviate = false,
+    backend=biber]{biblatex}
+\usepackage{csquotes}
+\DeclareQuoteAlias{croatian}{polish}
+
+% pakiety matematyczne
+\usepackage{amsmath}
+\usepackage{amsthm}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\StdDev}{\mathbb{D}}
+\DeclareMathOperator{\Var}{\mathbb{D}^2}
+\DeclareMathOperator{\Ex}{\mathbb{E}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\HH}{\mathbb{H}}
+
+% pakiety do grafiki
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% TODO
+\usepackage[colorinlistoftodos]{todonotes}
+
+% linki
+\usepackage{hyperref}
+\hypersetup{
+	hidelinks
+}
+
+% pakiety do rysowania
+\usepackage{tkz-graph}
+\usepackage{tkz-berge}
+\usepackage{tkz-euclide}
+
+% kropki przy numerach
+\makeatletter
+\renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\renewcommand\numberline[1]{#1.\hskip0.7em}
+\makeatother 
+
+% cytaty do rozdziałów
+\usepackage{epigraph}
+
+% numeracja środowisk
+\usepackage{chngcntr}
+\counterwithin{equation}{subsection}
+\counterwithin{figure}{subsection}
+\counterwithin{equation}{subsection}
+\counterwithin{table}{subsection}
+\counterwithin{listing}{section}
+
+% bookmark
+\usepackage{bookmark}
+
+% twierdzenia
+\theoremstyle{plain}
+\newtheorem{theorem}{Twierdzenie}[section]
+\newtheorem{lemma}{Lemat}[theorem]
+\newtheorem{corollary}[lemma]{Wniosek}
+\theoremstyle{definition}
+\newtheorem{axiom}{Aksjomat}[section]
+\newtheorem{definition}{Definicja}[section]
+\newtheorem{example}{Przykład}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Uwaga}
+
+\theoremstyle{definition}
+\newtheorem{exercise}{Zadanie}[section]
+\newtheoremstyle{solution}
+  {}{}%
+  {}{}%
+  {\itshape}{.}%
+  {\newline}{}%
+\theoremstyle{break}
+\newtheorem*{solution}{Rozwiązanie}
