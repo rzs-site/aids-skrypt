@@ -1,3 +1,11 @@
 \ProvidesPackage{rzs-aids}
 
 \usepackage[outer = 3cm, inner = 4cm]{geometry}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\makeatletter
+\addto\captionspolish{\renewcommand{\ALG@name}{Algorytm}}
+\addto\captionsenglish{\renewcommand{\ALG@name}{Algorithm}}
+\makeatother
