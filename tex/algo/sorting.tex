@@ -1,1 +1,42 @@
 \chapter{Algorytmy sortowania}
+
+\epigraph{Jeśli coś jest głupie i działa, to nie jest głupie.}{autor nieznany}
+
+Uważa się, że~jednym z~najbardziej fundamentalnych problemów 
+leżących u~podstaw informatyki jest problem sortowania. W~tym rozdziale 
+zostaną przedstawione jedne z~najbardziej popularnych algorytmów sortowania.
+Zanim jednak podejmiemy~się prób opisu tych algorytmów, przyda~się teoretyczne wprowadzenie.
+
+\section{Wprowadzenie}\label{sec:sorting:intro}
+
+Wprowadźmy ważne definicje.
+
+\begin{definition}[Tablica]\label{def:array}
+    Niech \( D \) będzie niepustym zbiorem. Tablicą
+    \( n \)-elementową (\( n \in \NN \)) o elementach
+    ze zbioru \( D \) nazywamy skończony ciąg
+    \( A = (a_1, a_2, a_3, \dotsc, a_{n - 1}, a_n) \in D^n \).
+\end{definition}
+\begin{remark}
+    W~przypadku podciągu \( (a_i, a_{i + 1}, a_{i + 2}, \dotsc, a_{j - 1}, a_j) \) 
+    stosujemy oznaczenie \( A \left[ a \isep b \right] \),
+    przy~czym \( 1 \le i \le n \), \( 1 \le j \le n \) 
+    oraz~\( i \le j \).
+    W~szczególności \( A \left[ 1 \isep n \right] \) 
+    oznacza całą tablicę \( n \)-elementową.
+    Stosować będziemy również oznaczenie na~\( i \)-ty 
+    element tej~tablicy jako \(A \left[ i \right] \).
+\end{remark}
+Mając zdefiniowaną tablicę możemy sformułować następujący problem.
+\begin{problem}[Problem sortowania]\label{problem:sorting}
+    Niech \( D \) będzie niepustym zbiorem 
+    i~\( A \left[ 1 \isep n \right] \) będzie 
+    tablicą \( n \)-elementową (\( n \in \NN \)) o~elementach
+    ze~zbioru~\( D \).
+    Niech porządek \( \le \) będzie porządkiem liniowym 
+    na~elementach ciągu \( A \).
+    Należy znaleźć taką permutację 
+    \( \sigma : \{ 1, 2, \dotsc, n \} \to \{ 1, 2, \dotsc, n \} \), 
+    że~\( a_{\sigma(1)} \le a_{\sigma(2)} \le a_{\sigma(3)} 
+    \le \dotso \le a_{\sigma(n - 1)} \le a_{\sigma(n)} \).
+\end{problem}
