@@ -90,16 +90,17 @@
 % twierdzenia
 \usepackage{amsthm}
 \theoremstyle{plain}
-\newtheorem{invariant}{Niezmiennik}[section]
-\newtheorem{fact}{Fakt}[section]
 \newtheorem{theorem}{Twierdzenie}[section]
+\newtheorem{invariant}[theorem]{Niezmiennik}
+\newtheorem{fact}[theorem]{Fakt}
+\newtheorem{observation}[theorem]{Obserwacja}
 \newtheorem{lemma}{Lemat}[theorem]
 \newtheorem{corollary}[lemma]{Wniosek}
 \theoremstyle{definition}
-\newtheorem{axiom}{Aksjomat}[section]
 \newtheorem{definition}{Definicja}[section]
-\newtheorem{example}{Przykład}[section]
-\newtheorem{problem}{Problem}[section]
+\newtheorem{axiom}[definition]{Aksjomat}
+\newtheorem{example}{Przykład}[definition]
+\newtheorem{problem}[definition]{Problem}
 \theoremstyle{remark}
 \newtheorem*{remark}{Uwaga}
 %% zadania i rozwiązania

@@ -220,11 +220,11 @@ przypomnijmy sobie z~algebry następujące definicje.
 
 Czytelnik może~się zastanawiać, czemu potrzebne~są~nam 
 inwersje w~analizie złożoności średniej.
-Należy zauważyć następujący fakt.
-\begin{fact}
-    Po wykonaniu jednej iteracji algorytmu~\ref{alg:insert} 
+Należy zauważyć, że 
+\begin{observation}
+    Po wykonaniu algorytmu~\ref{alg:insert} 
     liczba inwersji zmniejsza~się o~jeden.
-\end{fact}      
+\end{observation}      
 Dowód tej~obserwacji pozostawiamy jako ćwiczenie.
 Stąd można spojrzeć na~inwersje istniejące w~tablicy,
 która zostanie posortowana.
@@ -254,10 +254,10 @@ która zostanie posortowana.
     Zauważmy, że~jeśli permutacja \( \pi \)
     ma~inwersję \( i < j \), to~można przyporządkować 
     \begin{equation*}
-        (\pi(1), \pi(2), \dotsc, \pi(i), \dotsc \pi(j), \dotsc, 
-        \pi(n - 1), \pi(n)) \mapsto 
-        (\pi(1), \pi(2), \dotsc, \pi(j), \dotsc \pi(i), \dotsc, 
-        \pi(n - 1), \pi(n))
+        (\pi(1), \dotsc, \pi(i), \dotsc \pi(j), \dotsc, 
+        \pi(n)) \mapsto 
+        (\pi(1), \dotsc, \pi(j), \dotsc \pi(i), \dotsc, 
+        \pi(n))
     \end{equation*}
     przy czym
     to~przyporządkowanie jest bijekcją.
@@ -276,3 +276,12 @@ która zostanie posortowana.
     że~\( \Ex [I] = \binom{n}{2} \cdot \frac{1}{2} 
     = \frac{n(n - 1)}{4} = \BigTheta (n^2) \).
 \end{proof}
+
+To, że~algorytm ma~złożoność kwadratową, nie~oznacza,
+że~jest nieprzydatny. Biegły Czytelnik zawuaży, 
+że~złożoność pamięciowa tego algorytmu jest 
+rzędu \( \BigO (1) \), czyli jest tani w~kwestii
+użycia pamięci. Zatem algorytm nadaje~się
+do~małych próbek danych oraz w~technikach
+hybrydowych.
+
