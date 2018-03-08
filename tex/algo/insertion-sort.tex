@@ -1,0 +1,234 @@
+\section{Sortowanie przez wstawianie}
+
+Sortowanie przez wstawianie intuicyjnie odbywa~się w~taki sposób,
+w~jaki ludzie układają karty. W~każdym kroku układania tych kart 
+zostaje wstawiona karta do podtablicy już posortowanych kart.
+Jak przekonamy się później, ten algorytm łatwo zaimplementować.
+
+\subsection{Algorytm wstawiania}
+Omówmy sobie algorytm, który odpowiada za~działanie 
+\textsc{InsertionSort}a. Jest to~algorytm wstawiania 
+do~posegregowanej podtablicy \( A[1 \isep i] \) \(i\)-tego elementu
+tablicy \(A[1 \isep n]\), który będziemy określać
+mianem \textsc{Insert}. 
+\begin{algorithm}%
+    \label{alg:insert}
+    \caption{Wstawianie do posortowanej podtablicy}
+    \begin{algorithmic}[1]
+        \Require The array \( A[1 \isep i - 1] \) is already sorted.
+        \Ensure The array \( A[1 \isep i] \) is already sorted.
+        \Procedure{Insert}{$A[1 \isep i]$}
+            \State \( \text{key} \gets A[i]\)
+            \State \( j \gets i \)
+            \While{\( j \ge 1 \wedge A[j] > \text{key} \)}\label{alg:insert:while}
+                \State \( A[j + 1] \gets A[j] \)
+                \State \( j \gets j - 1 \)
+            \EndWhile
+            \State \( A[j + 1] \gets \text{key} \)
+        \EndProcedure%
+    \end{algorithmic}
+\end{algorithm}
+Udowodnijmy ważny niezmiennik.
+\begin{invariant}\label{inv:insert}
+    Dla~każdej iteracji pętli (w~linii~\ref{alg:insert:while})
+    \( 0 \le j_{\text{min}} \le j \le i - 1 \) podtablica \( A[ j + 1 \isep i] \)
+    zawiera elementy większe od~klucza,
+    przy czym \( j_{\text{min}} = \min \{ k : A[k] > \text{key} \} \).
+\end{invariant}
+\begin{proof}
+    Indukcja względem iteracji.
+    Załóżmy, że~\( j_{\text{min}} \le i - 1 \). W~wypadku,
+    gdy~\( j_{\text{min}} > i - 1 \) klucz jest wstawiony trywialnie,
+    bowiem jest~on elementem maksymalnym w~rozpatrywanej podtablicy.
+    Sprawdźmy tezę dla~\( j = i - 1 \). 
+    Ponieważ \( j_{\text{min}} \le j \)
+    oraz tablica \( A[1 \isep i - 1] \) jest posortowana, 
+    to~\( A[j_{\text{min}}] > \text{key} \) i~następnie
+    \( A[j_{\text{min}}] < A[i - 1] \), 
+    czyli \( A[i - 1] > \text{key} \). 
+    Zatem po wykonaniu tego kroku mamy, że~\( A[i] \gets A[i - 1] \),
+    czyli otrzymujemy, że~\( A[i] > \text{key} \),
+    innymi słowy, tablica \( A[i \isep i] \) spełnia tezę.
+    
+    Załóżmy teraz, że dla~pewnego \( k \) takiego, 
+    że~\( j_{\text{min}} \le k \le i - 1 \),
+    podtablica \( A[ k + 1 \isep i ] \)
+    jest posortowana i~zawiera elementy większe od~klucza.
+    Niech \( k' = k - 1 \) takie, że~\( j_{\text{min}} \le k' \).
+    Ponieważ \( j_{\text{min}} \le k' \) 
+    oraz tablica \( A[1 \isep i] \) jest posortowana, 
+    to~\( A[j_{\text{min}}] > \text{key} \) i~następnie
+    \( A[j_{\text{min}}] < A[k'] \), czyli 
+    \( A[k'] > \text{key} \). Wobec tego tablica zostanie przesunięta
+    o~jeden element, to~znaczy, 
+    \( A = (a_1, a_2, \dotsc, a_{j_{\text{min}}},
+    a_{j_{\text{min}} + 1}, \dotsc, 
+    a_{k' - 1}, a_{k'}, a_{k'}, a_{k' + 1},
+    \dotsc, a_{i}, a_{i + 1}, \dotsc, a_{n - 1}, a_n) \).
+    Z~założenia indukcyjnego podtablica \( A[k + 1 \isep i] \)
+    ma~elementy większe od~klucza.
+    Ponieważ \( A[k] > \text{key} \), to~\( A[k \isep i] 
+    = A[k' + 1 \isep i] \)
+    ma~elementy większe od~klucza, co~należało pokazać.
+\end{proof}
+
+\subsection{Algorytm sortowania przez wstawianie}
+Mając udowodniony algorytm wstawiania, możemy w~prosty sposób
+ułożyć algorytm sortowania przez wstawianie.
+
+\begin{algorithm}%
+    \label{alg:insertion-sort}
+    \caption{Sortowanie przez wstawianie}
+    \begin{algorithmic}[1]
+        \Require \( n \in \{ k \in \NN : k \ge 1 \} \)
+        \Ensure The array \( A[1 \isep n] \) is already sorted.
+        \Procedure{InsertionSort}{$A[1 \isep n]$}
+            \For{\( i \gets 2 \isep n \)}
+                \Call{Insert}{$A[1 \isep i]$}
+            \EndFor
+        \EndProcedure%
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{invariant}
+    Dla każdego kroku \( 2 \le i \le n \), tablica \( A[1 \isep i] \)
+    jest posortowana.
+\end{invariant}
+\begin{proof}
+    Dzięki niezmiennikowi~\ref{inv:insert}, 
+    po~wykonaniu algorytmu~\textsc{Insert} otrzymujemy,
+    iż~\( j = j_{\text{min}} - 1 \) oraz podtablica 
+    \( A[ j_{\text{min}} + 1 \isep i] \)
+    zawiera elementy większe od~klucza. Ponieważ
+    tablica \( A[1 \isep i - 1] \) jest posortowana,
+    to~\( A[j_{\text{min}} - 1] 
+    \le A[j_{\text{min}}] \le \text{key} \) i~stąd
+    wstawiamy \( A[j + 1] \gets \text{key} \).
+    Mamy wobec tego, że~tablica \( A[1 \isep i] \) 
+    jest posortowana, ponieważ \( A[j_{\text{min}} - 1] 
+    \le \text{key} \le A[j_{\text{min}} + 1] \).
+\end{proof}
+
+Dzięki temu algorytm sortowania przez wstawianie 
+sprawia, że tablica \( A[1 \isep n] \) jest posortowana.
+
+\subsection{Analiza złożoności sortowania przez wstawianie}
+Wykonajmy analizę złożoności pesymistycznej.
+\begin{fact}
+    Czas działania algorytmu~\ref{alg:insert}
+    jest rzędu \( \BigO(i) \).
+\end{fact}
+\begin{proof}
+    Niech tablica \( A[1 \isep i] \) będzie 
+    posortowana odwrotnie, to~znaczy
+    \( a_1 > a_2 > \dotso > a_{i - 1} > a_i \).
+    Stąd pętla (w~linii~\ref{alg:insert:while})
+    wykona~się \( (i - 1) - j_{\text{min}} + 1 \)
+    razy, przy czym \( j_{\text{min}} = 1 \),
+    czyli \( i - 1 \) razy. Stąd widzimy,
+    że \( i - 1 = \BigO(i) \).
+\end{proof}
+
+\begin{fact}
+    Czas działania algorytmu~\ref{alg:insertion-sort}
+    jest rzędu \( \BigO(n^2) \).
+\end{fact}
+\begin{proof}
+    Niech tablica \( A[1 \isep n] \) będzie 
+    posortowana odwrotnie, to znaczy
+    \( a_1 > a_2 > \dotso > a_{n - 1} > a_n \).
+    Stąd procedura~\ref{alg:insert}
+    wykona się \( n - 1 \).
+    Stąd widzimy,
+    że \( \sum_{i = 2}^n \BigO(i)
+     = \BigO \left( \frac{n(n + 1)}{2} \right)
+     = \BigO(n^2) \).
+\end{proof}
+
+Jak można zauważyć, algorytm jest niewydajny dla~dużych
+danych dzięki złożoności kwadratowej. Również pokażemy,
+że~dla przypadku średniego nadal nie~otrzymujemy
+lepszej złożoności. Zanim przejdziemy do~analizy,
+przypomnijmy sobie z~algebry następujące definicje.
+
+\begin{definition}
+    Permutacją \( \pi \) skończonego zbioru \( A \)
+    jest bijekcja \( \pi : A \to A \).
+\end{definition}
+
+\begin{definition}
+    Niech \( (A, \le) \) będzie porządkiem liniowym.
+    Inwersją dla permutacji \( \pi : A \to A \) 
+    nazywamy parę \( (i, j) \in A \times A \)
+    taką, że \( i < j \) oraz \( \pi(i) > \pi(j) \).
+\end{definition}
+
+Czytelnik może~się zastanawiać, czemu potrzebne~są~nam 
+inwersje w~analizie złożoności średniej.
+Należy zauważyć, że 
+\begin{observation}
+    Po wykonaniu algorytmu~\ref{alg:insert} 
+    liczba inwersji zmniejsza~się o~jeden.
+    Algorytm~\ref{alg:insertion-sort}
+    stąd kończy pracę, gdy liczba inwersji
+    jest równa zero.
+\end{observation}      
+Dowód tej~obserwacji pozostawiamy jako ćwiczenie.
+Stąd można spojrzeć na~inwersje istniejące w~tablicy,
+która zostanie posortowana.
+
+\begin{fact}
+    Średni czas działania algorytmu~\ref{alg:insertion-sort}
+    wynosi \( \BigTheta (n^2) \).
+\end{fact}
+\begin{proof}
+    Niech \( A = (a_1, a_2, \dotsc, a_n) \) będzie
+    tablicą oraz, \( \pi \) będzie permutacją
+    taką, że~\( a_{\pi(1)} \le a_{\pi(2)} 
+    \le \dotsc \le a_{\pi(n)} \).
+    Niech \( I_{i,j} \) będzie zmienną losową, która 
+    jest zadana wzorem.
+    \begin{equation*}
+        I_{i,j} = \begin{cases}
+            1 & i < j \wedge \pi(i) > \pi(j) \\
+            0 & \text{w p.w.}
+        \end{cases}
+    \end{equation*}
+    Niech \( I = \sum_{i < j} I_{i, j} \).
+    Z~liniowości wartości oczekiwanej mamy 
+    \( \Ex [I] = \Ex \left[ \sum_{i < j} I_{i, j} \right] 
+    = \sum_{i < j} \Ex [I_{i, j}] \).
+
+    Zauważmy, że~jeśli permutacja \( \pi \)
+    ma~inwersję \( i < j \), to~można przyporządkować 
+    \begin{equation*}
+        (\pi(1), \dotsc, \pi(i), \dotsc \pi(j), \dotsc, 
+        \pi(n)) \mapsto 
+        (\pi(1), \dotsc, \pi(j), \dotsc \pi(i), \dotsc, 
+        \pi(n))
+    \end{equation*}
+    przy czym
+    to~przyporządkowanie jest bijekcją.
+    Stąd otrzymujemy, że permutacji z~inwersją \( i < j \)
+    jest tyle samo, co~bez inwersji, czyli możemy
+    natrafić na~nią z~jednakowym prawdopodobieństwem
+    \( \PP [I_{i, j} = 1] = \frac{1}{2} \) dla dowolnych
+    \( i < j \). Oczywiście \( \Ex [I_{i, j}] 
+    = \PP [I_{i, j} = 1] = \frac{1}{2} \).
+    Uporządkowanych par \( (i, j) \) możemy 
+    ustalić na~\( \binom{n}{2} \) sposobów,
+    ponieważ wystarczy wybrać podzbiór dwuelementowy
+    i~z~tego, że~mamy liniowy porządek, możemy
+    utworzyć ciąg rosnący.
+    Wobec tego mamy, 
+    że~\( \Ex [I] = \binom{n}{2} \cdot \frac{1}{2} 
+    = \frac{n(n - 1)}{4} = \BigTheta (n^2) \).
+\end{proof}
+
+To, że~algorytm ma~złożoność kwadratową, nie~oznacza,
+że~jest nieprzydatny. Biegły Czytelnik zawuaży, 
+że~złożoność pamięciowa tego algorytmu jest 
+rzędu \( \BigO (1) \), czyli jest tani w~kwestii
+użycia pamięci. Zatem algorytm nadaje~się
+do~małych próbek danych oraz w~technikach
+hybrydowych.
