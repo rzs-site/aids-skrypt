@@ -18,8 +18,8 @@ mianem \textsc{Insert}.
         \Require The array \( A[1 \isep i - 1] \) is already sorted.
         \Ensure The array \( A[1 \isep i] \) is already sorted.
         \Procedure{Insert}{$A[1 \isep i]$}
-            \State \( \text{key} \gets A[i]\)
-            \State \( j \gets i \)
+            \State \textbf{let} \( \text{key} \gets A[i]\)
+            \State \textbf{let} \( j \gets i - 1 \)
             \While{\( j \ge 1 \wedge A[j] > \text{key} \)}\label{alg:insert:while}
                 \State \( A[j + 1] \gets A[j] \)
                 \State \( j \gets j - 1 \)

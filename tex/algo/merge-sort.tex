@@ -8,6 +8,9 @@ algorytmów opartych o~metodę \emph{dziel i zwyciężaj}.
 \subsection{Algorytm scalania}
 Opiszemy tutaj algorytm scalania, który odpowiada 
 za~frazę \emph{zwyciężaj} w~naszej metodzie.
+Jest to algorytm, który nie~jest algorytmem w~miejscu,
+to znaczy, potrzebuje osobnej pamięci, by~wykonać
+scalanie.
 
 \begin{algorithm}
     \label{alg:merge}
@@ -16,9 +19,30 @@ za~frazę \emph{zwyciężaj} w~naszej metodzie.
         \Require The array \( A[1 \isep n] \) is already sorted.
         \Ensure The array \( B[1 \isep m] \) is already sorted.
         \Procedure{Merge}{$A[1 \isep n], B[1 \isep m], $}
-            \State \( i \gets 1 \)
-            \State \( j \gets 1 \)
-            
+            \State \textbf{let} \( i \gets 1, j \gets 1, k \gets 1 \)
+            \State \textbf{let} \( C[1 \isep n + m] \) 
+            \While{\( i \le n \wedge j \le m \)}
+                \If{\( A[i] \le B[j]\)}
+                    \State \( C[k] \gets A[i] \)
+                    \State \( i \gets i + 1 \)
+                    \State \( k \gets k + 1 \)
+                \Else 
+                    \State \( C[k] \gets A[j] \)
+                    \State \( j \gets j + 1 \)
+                    \State \( k \gets k + 1 \)
+                \EndIf
+            \EndWhile
+            \While{\( i \le n \)}
+                \State \( C[k] \gets A[i] \)
+                \State \( i \gets i + 1 \)
+                \State \( k \gets k + 1 \)
+            \EndWhile
+            \While{\( j \le m \)}
+                \State \( C[k] \gets A[j] \)
+                \State \( j \gets j + 1 \)
+                \State \( k \gets k + 1 \)
+            \EndWhile
+            \State \textbf{return} \( C \)
         \EndProcedure%
     \end{algorithmic}
 \end{algorithm}
