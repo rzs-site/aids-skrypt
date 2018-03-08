@@ -16,14 +16,14 @@ scalanie.
     \label{alg:merge}
     \caption{Złączanie dwóch tablic}
     \begin{algorithmic}[1]
-        \Require Array \( A[1 \isep n] \) 
+        \Require Arrays \( A[1 \isep n] \) 
         and~\( B[1 \isep m] \) are already sorted.
         \Ensure Returned array is already sorted
             and consists of~\( A \) and~\( B \).
         \Procedure{Merge}{$A[1 \isep n], B[1 \isep m]$}
             \State \textbf{let} \( i \gets 1, j \gets 1, k \gets 1 \)
             \State \textbf{let} \( C[1 \isep n + m] \) 
-            \While{\( i \le n \wedge j \le m \)}
+            \While{\( i \le n \wedge j \le m \)} \label{alg:merge:while}
                 \If{\( A[i] \le B[j]\)}
                     \State \( C[k] \gets A[i] \)
                     \State \( i \gets i + 1 \)
@@ -48,3 +48,147 @@ scalanie.
         \EndProcedure%
     \end{algorithmic}
 \end{algorithm}
+
+\begin{invariant}
+    \label{inv:merge}
+    Dla~każdego kroku pętli (w~linii~\ref{alg:merge:while})
+    \( 1 \le k \le \min \{n, m\} \)
+    tablica \( C[1 \isep k] \) jest posortowana i~zawiera elementy
+    tablic \( A[1 \isep i] \) lub \( A[1 \isep j] \).
+\end{invariant}
+\begin{proof}
+    Indukcja względem iteracji pętli. Sprawdźmy 
+    dla~\( k = 1 \). Mamy wobec tego
+    po~wykonaniu ciała \( C[1] = \min \{ A[1], B[1] \} \),
+    stąd trywialnie mamy spełnioną tezę.
+
+    Załóżmy teraz, że dla pewnego \( l \) takiego,
+    że \( 1 \le l \le \min \{n, m\} \), tablica \( C[1 \isep l] \) jest posortowana 
+    i~zawiera elementy
+    tablic \( A[1 \isep i] \) lub~\( A[1 \isep j] \), gdzie \( 1 \le i \le n \)
+    oraz \( 1 \le j \le m \) są ustalone.
+    
+    W~kolejnym kroku \( l' = l + 1 \le \min \{ n, m \} \) zostaje dodany element
+    \( C[l'] = \min \{ A[i], B[j] \} \). 
+    Pokażemy teraz, że~\( C[l] \le C[l'] \).
+    Ponieważ tablica~\( C \) z~założenia indukcyjnego jest posortowana,
+    to~\( C[l] \) jest maksymalnym 
+    elementem tablicy~\( C[1 \isep l] \).
+    Ponieważ kresem górnym tablicy~\( A[1 \isep i - 1] \) jest \( A[i] \)
+    oraz podobnie dla~\( B[1 \isep j - 1] \) jest \( B[j] \),
+    to~otrzymujemy, że~\( C[l] \le A[i] \) lub~\( C[l] \le B[j] \),
+    czyli \( C[l] \le C[l'] \), co~należało dowieść.
+\end{proof}
+
+\begin{fact}
+    Po wykonaniu algorytmu~\ref{alg:merge}
+    spełniony jest warunek końcowy.
+\end{fact}
+\begin{proof}
+    Ponieważ udowodniliśmy prawdziwość 
+    niezmiennika~\ref{inv:merge}, 
+    to~tablica \( C[1 \isep \min \{ n, m \}] \)
+    zawiera elementy tablic
+    \( A[1 \isep \min \{ n, m \}] \)
+    lub~\( B[1 \isep \min \{ n, m \}] \).
+    Jeśli \( n = \min \{ n, m \} \),
+    to należy przekopiować tablicę
+    \( B[\min \{ n, m \} + 1, m] \).
+    Istotnie, tablica \( B \) jest posortowana
+    i~mamy, że~\( C[\min \{ n, m \}] 
+    \le B[\min \{ n, m \} + 1] \).
+    Analogiczna sytuacja następuje, 
+    gdy~\( m = \min \{ n, m\} \).
+\end{proof}
+
+\subsection{Algorytm sortowania przez scalanie}
+Mając udowodnioną poprawność algorytmu scalania
+możemy sformułować sam~algorytm sortowania.
+
+\begin{algorithm}
+    \label{alg:merge-sort}
+    \caption{Sortowanie przez scalanie}
+    \begin{algorithmic}[1]
+        \Require \( n \in \{ k \in \NN : k \ge 1 \} \)
+        \Ensure The array \( A[1 \isep n] \) is already sorted.
+        \Procedure{MergeSort}{$A[1 \isep n]$}
+            \If{\( n = 1 \)}
+                \State \textbf{return}
+            \EndIf
+            \State \textbf{let} 
+                \( \text{mid} \gets 
+                \left\lfloor \frac{n}{2} \right\rfloor \)
+            \State \Call{MergeSort}{$A[1 \isep \text{mid}]$}
+            \State \Call{MergeSort}{$A[\text{mid} + 1 \isep n]$}
+            \State \textbf{let} 
+                \( A' \gets \) 
+                \Call{Merge}{$A[1 \isep \text{mid}], 
+                    A[\text{mid} + 1 \isep n]$}
+            \For{\( i \gets 1 \isep n \)}
+                \State \( A[i] \gets A'[i] \)
+            \EndFor
+        \EndProcedure%
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{fact}
+    Po wykonaniu algorytmu~\ref{alg:merge-sort} 
+    spełniony jest warunek
+    końcowy dla~każdego \( n \ge 1\).
+\end{fact}
+\begin{proof}
+    Indukcja zupełna względem wielkości tablicy.
+    Dla~\( n = 1 \) mamy trywialnie posortowaną tablicę.
+    Załóżmy, że~dla~pewnego \( k' \ge 1 \) mamy, 
+    że~dla~każdego \( k, l \) takiego, 
+    że~\( k' \ge k \ge l \ge 1 \) i~\( k \neq l \),
+    tablica \( A[l \isep k] \) jest posortowana przez
+    ów~algorytm. Wobec tego, w~szczególności
+    posortowane~są \( A[1 \isep 
+    \left\lfloor \frac{n}{2} \right\rfloor] \) oraz \(
+    A[\left\lfloor \frac{n}{2} \right\rfloor + 1 \isep k'] \). 
+    Z~warunku końcowego algorytmu~\ref{alg:merge}
+    mamy, że~tablica \(A[1 \isep k']\) jest posortowana,
+    co~należało dowieść.
+\end{proof}
+
+\subsection{Analiza złożoności}
+Przeanalizujmy czas algorytmu.
+
+\begin{fact}
+    Czas wykonywania algorytmu~\ref{alg:merge}
+    ze~względu na~częstość zapisu do~tablicy \( C \) 
+    jest rzędu
+    \( \BigTheta (n + m) \).
+\end{fact}
+\begin{proof}
+    Należy zauważyć, że pętla w~linii~\ref{alg:merge:while}
+    wykona się dokładnie \( \min \{ n, m \} \) razy.
+    Dodatkowo wykonywane~są operacje kopiowania
+    \( \max \{ n, m \} - \min \{ n, m \} \)
+    razy. Łączny koszt wynosi 
+    \( \max \{ n, m \} - \min \{ n, m \} + \min \{ n, m \} 
+    = \max \{ n, m \} = \BigTheta (n + m) \)
+\end{proof}
+
+\begin{fact}
+    Czas wykonywania algorytmu~\ref{alg:merge-sort}
+    jest rzędu~\( \BigTheta (n \log n) \).
+\end{fact}
+\begin{proof}
+    Mamy następującą funkcję czasu
+    \begin{equation}
+        T(n) = \begin{cases}
+            2T \left( \frac{n}{2} \right) + \BigTheta (n)
+                & n > 1 \\
+            \BigTheta(1) & n = 1 
+        \end{cases}
+    \end{equation}
+    Z~twierdzenia o~rekurencji uniwersalnej
+    mamy, że~\( T(n) = \BigTheta (n \log n) \).
+\end{proof}
+
+Należy zauważyć, że czas średni, zarówno~jak 
+i~optymistyczny jest taki sam, 
+wynika~to~ze~złożoności algorytmu scalania.
+
