@@ -2,6 +2,19 @@
 
 \usepackage{rzs-aids}
 
+% bibliografia
+\usepackage[style=numeric, 
+    sorting=nty,
+    isbn=false,
+    abbreviate = false,
+    backend=biber]{biblatex}
+
+\usepackage{csquotes}
+
+\DeclareQuoteAlias{croatian}{polish}
+
+\bibliography{tex/algo/merge-sort}
+
 \title{Skrypt do Algorytmów i Struktur Danych}
 \author{
     K. Kleczkowski
@@ -15,4 +28,6 @@
     \part{Algorytmy}
 
     \input{tex/algo/sorting}
+
+    \printbibliography
 \end{document}
